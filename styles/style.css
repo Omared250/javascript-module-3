@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+/* Styling the header of the page with the Title */
+
+.page-title {
+    width: 100%;
+    height: 3em;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.page-title img {
+    width: 8em;
+    margin: auto 0 auto 2em;
+}
+
+/* Styling side bar */
+
+.side-bar {
+    position: fixed;
+    left: 1em;
+    top: 4.5em;
+    width: 36%;
+    height: 50em;
+    font-family: 'Open Sans', sans-serif;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+@media(min-width: 1024px) {
+    .side-bar {
+        width: 25%;
+    }
+}
+
+.side-bar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.side-bar ul li {
+    margin-left: -1.5em;
+    margin-top: 0.7em;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Styling div of the episodies information */
+
+.episode-info {
+    position: fixed;
+    left: 28em;
+    top: 10em;
+    width: 65%;
+    height: 40em;
+    font-family: 'Open Sans', sans-serif;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+@media(max-width: 1024px) {
+    .episode-info {
+        left: 20em;
+        top: 8em;
+        height: 42em;
+    }
+}

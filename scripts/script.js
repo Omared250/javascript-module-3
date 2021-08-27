@@ -1,4 +1,4 @@
-import { getEpisodes, getOneEpisode } from './api.js'
+import { getEpisodes } from './api.js'
 
 const mainContainer = document.getElementById('root');
 
@@ -7,6 +7,7 @@ function createHeader() {
     const showTitle = document.createElement('img');
 
     showTitle.src = 'images/image4.png'
+    headerContainer.classList.add('page-title')
 
     mainContainer.appendChild(headerContainer);
     headerContainer.appendChild(showTitle);
@@ -20,22 +21,37 @@ async function getEpisodesName() {
 
     sideBarContainer.appendChild(listOfEpisodes);
     mainContainer.appendChild(sideBarContainer);
+    sideBarContainer.classList.add('side-bar')
 
     const episodes = await getEpisodes();
 
-    episodes.forEach(({ name }) => {
+    episodes.forEach(({ name, characters }) => {
         const episode = document.createElement('li');
         episode.textContent = name;
-        listOfEpisodes.appendChild(episode);       
+        listOfEpisodes.appendChild(episode);
+        
+        // const characterImage = document.createElement('img');
+        // characterImage.src = characters;
+        // mainContainer.appendChild(characterImage);
     });
 
     const buttonEl = document.createElement('input');
     buttonEl.type = 'button';
     buttonEl.value = 'Load Episodes'
-    mainContainer.appendChild(buttonEl);
+    sideBarContainer.appendChild(buttonEl);
 }
 
 getEpisodesName()
+
+function getEpisodeInfo() {
+    const episodeInfoContainer = document.createElement('div');
+
+    mainContainer.appendChild(episodeInfoContainer);
+    episodeInfoContainer.classList.add('episode-info');
+}
+
+getEpisodeInfo();
+
 
 
 
@@ -44,7 +60,7 @@ getEpisodesName()
 
 //     const episodes = await getEpisodes();
 
-//     episodes.forEach(({ name, air_date, characteres }) => {
+//     episodes.forEach(({ name, air_date, characters }) => {
 
 //         const episodeTitle = document.createElement('h2');
 //         const episodeDate = document.createElement('p');
