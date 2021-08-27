@@ -38,6 +38,7 @@ async function getEpisodesName() {
     const buttonEl = document.createElement('input');
     buttonEl.type = 'button';
     buttonEl.value = 'Load Episodes'
+    buttonEl.classList.add('button')
     sideBarContainer.appendChild(buttonEl);
 }
 
