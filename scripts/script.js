@@ -25,9 +25,12 @@ async function getEpisodesName() {
 
     const episodes = await getEpisodes();
 
-    episodes.forEach(({ name }) => {
+    episodes.map(({ name, url }) => {
         const episode = document.createElement('li');
-        episode.textContent = name;
+        const episodeLink = document.createElement('a');
+        episode.appendChild(episodeLink);
+        episodeLink.textContent = name;
+        episodeLink.href = url;
         listOfEpisodes.appendChild(episode);
     });
 

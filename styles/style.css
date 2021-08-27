@@ -45,6 +45,11 @@
     text-decoration: underline;
 }
 
+.side-bar ul li a {
+    text-decoration: none;
+    color: black;
+}
+
 /* Styling div of the episodies information */
 
 .episode-info {
