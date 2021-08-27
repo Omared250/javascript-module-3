@@ -25,14 +25,10 @@ async function getEpisodesName() {
 
     const episodes = await getEpisodes();
 
-    episodes.forEach(({ name, characters }) => {
+    episodes.forEach(({ name }) => {
         const episode = document.createElement('li');
         episode.textContent = name;
         listOfEpisodes.appendChild(episode);
-        
-        // const characterImage = document.createElement('img');
-        // characterImage.src = characters;
-        // mainContainer.appendChild(characterImage);
     });
 
     const buttonEl = document.createElement('input');
@@ -44,39 +40,34 @@ async function getEpisodesName() {
 
 getEpisodesName()
 
-function getEpisodeInfo() {
+async function getEpisodeInfo() {
     const episodeInfoContainer = document.createElement('div');
 
     mainContainer.appendChild(episodeInfoContainer);
     episodeInfoContainer.classList.add('episode-info');
+
+    const episodes = await getEpisodes();
+
+    episodes.map(({ name, air_date, characters }) => {
+        const episodeName = document.createElement('h2');
+        episodeInfoContainer.appendChild(episodeName);
+        const episodeDate = document.createElement('p');
+        episodeInfoContainer.appendChild(episodeDate);
+        const characterContainerInfo = document.createElement('div')
+        episodeInfoContainer.appendChild(characterContainerInfo);
+
+        episodeName.textContent = name;
+        episodeDate.textContent = air_date;
+
+        const charactersInfo = characters;
+
+        charactersInfo.forEach((character) => {
+            const characterImage = document.createElement('img');
+            characterImage.src = character;
+            characterContainerInfo.appendChild(characterImage);
+            // return characterImage;
+        })
+    })
 }
 
 getEpisodeInfo();
-
-
-
-
-// async function getEpisodeInfo() {
-//     const episodeInfoContainer = document.createElement('div');
-
-//     const episodes = await getEpisodes();
-
-//     episodes.forEach(({ name, air_date, characters }) => {
-
-//         const episodeTitle = document.createElement('h2');
-//         const episodeDate = document.createElement('p');
-//         const characterImage = document.createElement('img');
-
-//         episodeTitle.textContent = name;
-//         episodeDate.textContent = air_date;
-//         characterImage.src = characteres;
-
-//         episodeInfoContainer.appendChild(episodeTitle);
-//         episodeInfoContainer.appendChild(episodeDate);
-//         episodeInfoContainer.appendChild(characterImage);
-//     });
-
-//     mainContainer.appendChild(episodeInfoContainer);
-// }
-
-// getEpisodeInfo()
