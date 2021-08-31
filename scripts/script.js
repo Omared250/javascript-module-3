@@ -1,76 +1,82 @@
-import { getEpisodes } from './api.js'
+import { getEpisodes } from "./api.js";
 
-const mainContainer = document.getElementById('root');
+const root = document.getElementById('root');
 
-function createHeader() {
+function creatHeader() {
     const headerContainer = document.createElement('div');
-    const showTitle = document.createElement('img');
-
-    showTitle.src = 'images/image4.png'
-    headerContainer.classList.add('page-title')
-
-    mainContainer.appendChild(headerContainer);
-    headerContainer.appendChild(showTitle);
+    const imageTitle = document.createElement('img');
+    imageTitle.src = 'images/image4.png'
+    headerContainer.appendChild(imageTitle);
+    return headerContainer;
 }
 
-createHeader()
+// async function buttonEvent() {
+//     const url = 'https://rickandmortyapi.com/api/episode';
+//     fetch(url)
+//     .then(response => response.json())
+//     .then(json => {
+        
+//     })
+// }
 
-async function getEpisodesName() {
-    const sideBarContainer = document.createElement('div');
-    const listOfEpisodes = document.createElement('ul');
+function sideBar(episodes) {
+    const episodesContainer = document.createElement('div');
 
-    sideBarContainer.appendChild(listOfEpisodes);
-    mainContainer.appendChild(sideBarContainer);
-    sideBarContainer.classList.add('side-bar')
-
-    const episodes = await getEpisodes();
-
-    episodes.map(({ name, url }) => {
-        const episode = document.createElement('li');
-        const episodeLink = document.createElement('a');
-        episode.appendChild(episodeLink);
-        episodeLink.textContent = name;
-        episodeLink.href = url;
-        listOfEpisodes.appendChild(episode);
+    episodes.map(({id}) => {
+        const episodeId = document.createElement('p');
+        episodeId.textContent = `Episode ${id}`;
+        episodesContainer.appendChild(episodeId);
     });
-
+    
+    //button
     const buttonEl = document.createElement('input');
     buttonEl.type = 'button';
     buttonEl.value = 'Load Episodes'
-    buttonEl.classList.add('button')
-    sideBarContainer.appendChild(buttonEl);
+    // buttonEl.addEventListener('click', (e) => {
+        
+    // })
+    episodesContainer.appendChild(buttonEl);
+
+    return episodesContainer;
 }
 
-getEpisodesName()
-
 async function getEpisodeInfo() {
-    const episodeInfoContainer = document.createElement('div');
+    const url = 'https://rickandmortyapi.com/api/episode/1';
 
-    mainContainer.appendChild(episodeInfoContainer);
-    episodeInfoContainer.classList.add('episode-info');
+    fetch(url)
+    .then(response => response.json())
+    .then(json => {
+        //creating episode info container
+        const episodeInfoContainer = document.createElement('div');
 
-    const episodes = await getEpisodes();
-
-    episodes.map(({ name, air_date, characters }) => {
+        //creating episode name
         const episodeName = document.createElement('h2');
+        episodeName.textContent = json.name;
         episodeInfoContainer.appendChild(episodeName);
+
+        //creating espisode date
         const episodeDate = document.createElement('p');
+        episodeDate.textContent = `${json.air_date} | ${json.episode}`
         episodeInfoContainer.appendChild(episodeDate);
-        const characterContainerInfo = document.createElement('div')
-        episodeInfoContainer.appendChild(characterContainerInfo);
 
-        episodeName.textContent = name;
-        episodeDate.textContent = air_date;
+        //creating character images 
+        let characters = json['characters'];
 
-        const charactersInfo = characters;
+        characters.forEach(characterLink => {
+            fetch(characterLink)
+            .then(response => response.json())
+            .then(json => {
+                const character = document.createElement('img');
+                character.src = json.image;
+                episodeInfoContainer.appendChild(character); 
+            })          
+        });
 
-        charactersInfo.forEach((character) => {
-            const characterImage = document.createElement('img');
-            characterImage.src = character;
-            characterContainerInfo.appendChild(characterImage);
-            // return characterImage;
-        })
+        root.appendChild(episodeInfoContainer);
+        return episodeInfoContainer;
     })
 }
 
+root.appendChild(creatHeader());
+root.appendChild(sideBar(await getEpisodes()));
 getEpisodeInfo();
