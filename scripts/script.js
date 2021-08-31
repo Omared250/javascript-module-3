@@ -1,53 +1,52 @@
-import { getEpisodes } from "./api.js";
+ import { getEpisodes } from "./api.js";
 
 const root = document.getElementById('root');
+const sideBarContainer = document.createElement('div');
+sideBarContainer.classList.add('side-bar')
+const listOfEpisodes = document.createElement('ul');
+sideBarContainer.appendChild(listOfEpisodes);
+const episodeInfoContainer = document.createElement('div');
+episodeInfoContainer.classList.add('espisodes-info-area')
 
 function creatHeader() {
     const headerContainer = document.createElement('div');
+    headerContainer.classList.add('header')
     const imageTitle = document.createElement('img');
     imageTitle.src = 'images/image4.png'
     headerContainer.appendChild(imageTitle);
     return headerContainer;
 }
 
-// async function buttonEvent() {
-//     const url = 'https://rickandmortyapi.com/api/episode';
-//     fetch(url)
-//     .then(response => response.json())
-//     .then(json => {
-        
-//     })
-// }
-
 function sideBar(episodes) {
-    const episodesContainer = document.createElement('div');
 
-    episodes.map(({id}) => {
-        const episodeId = document.createElement('p');
+    episodes.results.map(({id}) => {
+        const episodeId = document.createElement('li');
         episodeId.textContent = `Episode ${id}`;
-        episodesContainer.appendChild(episodeId);
+        listOfEpisodes.appendChild(episodeId);
+        episodeId.addEventListener('click', getEpisodeInfo)
     });
     
     //button
     const buttonEl = document.createElement('input');
+    buttonEl.classList.add('button-side-bar');
     buttonEl.type = 'button';
     buttonEl.value = 'Load Episodes'
-    // buttonEl.addEventListener('click', (e) => {
-        
-    // })
-    episodesContainer.appendChild(buttonEl);
+    buttonEl.addEventListener('click', loadMoreEpisodes)
+    sideBarContainer.appendChild(buttonEl);
 
-    return episodesContainer;
+    return sideBarContainer;
 }
 
+let episodesNumber = 1;
+
 async function getEpisodeInfo() {
-    const url = 'https://rickandmortyapi.com/api/episode/1';
+    const url = `https://rickandmortyapi.com/api/episode/${episodesNumber}`;
 
     fetch(url)
     .then(response => response.json())
     .then(json => {
         //creating episode info container
-        const episodeInfoContainer = document.createElement('div');
+        episodeInfoContainer.textContent = '';
 
         //creating episode name
         const episodeName = document.createElement('h2');
@@ -66,17 +65,52 @@ async function getEpisodeInfo() {
             fetch(characterLink)
             .then(response => response.json())
             .then(json => {
+                //character container
+                const characterContainer = document.createElement('div');
+                characterContainer.classList.add('character-container');
+
+                //character image
                 const character = document.createElement('img');
                 character.src = json.image;
-                episodeInfoContainer.appendChild(character); 
+                characterContainer.appendChild(character);
+
+                //character name and status
+                const characterNameAndStatus = document.createElement('p');
+                characterNameAndStatus.textContent = `${json.name} | ${json.status}`
+                characterContainer.appendChild(characterNameAndStatus);
+
+                //append character container to father element
+                const episodeContainer = document.createElement('div')
+                episodeContainer.classList.add('characters-image-container')
+                episodeContainer.appendChild(characterContainer);
+                episodeInfoContainer.appendChild(episodeContainer); 
             })          
         });
-
-        root.appendChild(episodeInfoContainer);
         return episodeInfoContainer;
     })
+
+    episodesNumber++;
+}
+
+let pageId = 2;
+
+async function loadMoreEpisodes() {
+    const pageUrl = `https://rickandmortyapi.com/api/episode?page=${pageId}`
+
+    fetch(pageUrl)
+    .then(response => response.json())
+    .then(page => {
+        const newEpisodes = page.results
+        newEpisodes.forEach(({id}) => {
+            const newEpisodeId = document.createElement('li');
+            newEpisodeId.textContent = `Episode ${id}`;
+            listOfEpisodes.appendChild(newEpisodeId);
+            newEpisodeId.addEventListener('click', getEpisodeInfo)
+        })
+    })
+    pageId++
 }
 
 root.appendChild(creatHeader());
 root.appendChild(sideBar(await getEpisodes()));
-getEpisodeInfo();
+root.appendChild(episodeInfoContainer);

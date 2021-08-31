@@ -2,8 +2,8 @@ async function getEpisodes() {
     const url = 'https://rickandmortyapi.com/api/episode';
     
     const response = await fetch(url);
-    const { results } = await response.json();
-    return results;
+    const data = await response.json();
+    return data;
 }
 
 export { getEpisodes };
