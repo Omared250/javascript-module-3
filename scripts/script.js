@@ -7,6 +7,8 @@ const listOfEpisodes = document.createElement('ul');
 sideBarContainer.appendChild(listOfEpisodes);
 const episodeInfoContainer = document.createElement('div');
 episodeInfoContainer.classList.add('espisodes-info-area')
+const episodeContainer = document.createElement('div')
+episodeContainer.classList.add('characters-image-container')
 
 function creatHeader() {
     const headerContainer = document.createElement('div');
@@ -80,12 +82,11 @@ async function getEpisodeInfo() {
                 characterContainer.appendChild(characterNameAndStatus);
 
                 //append character container to father element
-                const episodeContainer = document.createElement('div')
-                episodeContainer.classList.add('characters-image-container')
                 episodeContainer.appendChild(characterContainer);
                 episodeInfoContainer.appendChild(episodeContainer); 
-            })          
+            })         
         });
+        episodeContainer.textContent = '';
         return episodeInfoContainer;
     })
 
